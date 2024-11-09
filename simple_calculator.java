@@ -46,3 +46,7 @@ public class BasicCalculator {
                 System.out.println("Error: Invalid operator. Please use +, -, *, or /.");
                 break;
         }
+
+    scanner.close();
+    }
+}
