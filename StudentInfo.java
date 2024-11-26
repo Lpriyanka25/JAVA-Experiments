@@ -1,71 +1,77 @@
+
 import java.io.*;
 
-public class StudentInfo {
+class StudentInfo{
+
     private String name;
+    private String course;
     private int age;
-    private String grade;
 
-    // Method to get student details from the user using DataInputStream
-    public void getStudentDetails() {
-        try (DataInputStream dis = new DataInputStream(System.in)) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            
-            System.out.print("Enter student's name: ");
-            name = reader.readLine();
-            
-            System.out.print("Enter student's age: ");
-            age = Integer.parseInt(reader.readLine());
-            
-            System.out.print("Enter student's grade: ");
-            grade = reader.readLine();
-            
-        } catch (IOException e) {
-            System.out.println("Error reading input: " + e.getMessage());
-        }
+
+    public void GetInfo()
+    {
+        try( BufferedReader br=new BufferedReader(new InputStreamReader(System.in)))
+      {
+
+       System.out.println("Enter the name of Student:");
+       name=br.readLine();
+
+       System.out.println("Enter age of  Student: ");
+       age=Integer.parseInt(br.readLine());
+
+       System.out.println("Enter the course of the student:");
+       course=br.readLine();
+
+      }
+      catch(IOException e)
+      {
+        System.out.println("Error while taking input:"+e.getMessage());
+      }
     }
 
-    // Method to write student details to a file using FileOutputStream
-    public void saveStudentDetailsToFile() {
-        try (FileOutputStream fos = new FileOutputStream("student_info.txt", true);
-             PrintWriter writer = new PrintWriter(fos)) {
-             
-            writer.println("Name: " + name);
-            writer.println("Age: " + age);
-            writer.println("Grade: " + grade);
-            writer.println("---------------------------");
-            System.out.println("Student details saved to file successfully.");
-            
-        } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
-        }
-    }
-
-    // Method to read student details from the file using FileInputStream
-    public void readStudentDetailsFromFile() {
-        try (FileInputStream fis = new FileInputStream("student_info.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(fis))) {
-             
-            String line;
-            System.out.println("\nStudent Details from File:");
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+    public void writeToFile(String fileName)
+    {
+        try(FileOutputStream fos=new FileOutputStream(fileName);
+            DataOutputStream dos=new DataOutputStream(fos))
+            {
+               dos.writeUTF(name);
+               dos.writeInt(age);
+               dos.writeUTF(course);
             }
-            
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
+    
+         catch(IOException e)
+        {
+            System.out.println("Error while writing to file"+ e.getMessage());
         }
-    }
+   }
 
-    public static void main(String[] args) {
-        StudentInfo studentInfo = new StudentInfo();
-        
-        // Getting student details
-        studentInfo.getStudentDetails();
-        
-        // Saving student details to the file
-        studentInfo.saveStudentDetailsToFile();
-        
-        // Reading and displaying student details from the file
-        studentInfo.readStudentDetailsFromFile();
-    }
+   public void readFromFile(String fileName)
+   {
+      try(FileInputStream fis=new FileInputStream(fileName);
+          DataInputStream dis=new DataInputStream(fis))
+          {
+            String fileNameRead=dis.readUTF();
+            int fileAgeRead=dis.readInt();
+            String fileCourseRead=dis.readUTF();
+          }
+
+      catch(IOException e)    
+      {
+        System.out.println("Error while reading from file"+ e.getMessage());
+      }
+   }
+
+   public static void main(String [] args)
+   {
+      StudentInfo student=new StudentInfo();
+      student.GetInfo();
+
+      String fileName="student_record.txt";
+      student.writeToFile(fileName);
+      student.readFromFile(fileName);
+   }
+
 }
+    
+
+    
