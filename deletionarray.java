@@ -13,6 +13,12 @@ class Codechef
 
         int positionToDelete = 2; 
 
+	for (int i = positionToDelete; i < size - 1; i++) {
+            array[i] = array[i + 1];
+        }
+
+        size--;
+
         for (int i = 0; i < size; i++) {
             System.out.print(array[i] + " ");
         }
